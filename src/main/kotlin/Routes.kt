@@ -1,6 +1,7 @@
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import java.io.InputStream
+import moe.tlaster.precompose.navigation.Navigator
 import org.yaml.snakeyaml.Yaml
 
 data class Route(
@@ -15,6 +16,7 @@ data class Route(
 
 object Routes {
   private val routes: MutableList<Route> = mutableListOf()
+  lateinit var navi: Navigator
 
   init {
     loadRoutesFromYaml()
@@ -22,13 +24,14 @@ object Routes {
 
   private fun getComposableByName(composableName: String): @Composable (List<String>) -> Unit {
     return when (composableName) {
-      "App" -> { params -> App(*params.toTypedArray()) }
-      "App2" -> { _ -> App2() }
-      "Text" -> { _ -> Text("Hidden Route") }
+      "App1" -> { params -> App1(params[0], params[1]) }
+      "App2" -> { _ -> App2(navi) }
+      "Text" -> { params -> Text(params[0]) }
       else -> { _ -> Text("Unknown route") }
     }
   }
 
+  @Suppress("UNCHECKED_CAST")
   private fun loadRoutesFromYaml() {
     val yaml = Yaml()
     val inputStream: InputStream? = this::class.java.getResourceAsStream("/routes.yaml")
@@ -41,6 +44,7 @@ object Routes {
       val hidden = route["hidden"] == true
       val params = route["params"] as? List<String> ?: emptyList()
       routes.add(Route(name, composable, hidden, params))
+      println("Loaded route: $name with params: $params")
     }
   }
 
@@ -57,7 +61,7 @@ object Routes {
   }
 }
 
-fun getComposable(route: Route, params: List<String>): @Composable () -> Unit {
+fun getComposable(route: Route, params: List<String> = emptyList()): @Composable () -> Unit {
   return if (route.dynamic) {
     { route.composable(params) }
   } else {

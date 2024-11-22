@@ -1,3 +1,4 @@
+import Routes.navi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
@@ -23,7 +24,7 @@ import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.rememberNavigator
 
 @Composable
-fun App(vararg params: String) {
+fun App1(id: String, name: String) {
   var text by remember { mutableStateOf("Hello, World!") }
   Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
     Column(
@@ -32,17 +33,27 @@ fun App(vararg params: String) {
     ) {
       Button(onClick = { text = "Hello, Desktop!" }) { Text(text) }
       Spacer(modifier = Modifier.height(16.dp))
-      params.forEach { param -> Text("Param: ${param.capitalize(Locale.current)}") }
+      Text("ID: $id")
+      Text("Name: $name")
     }
   }
 }
 
 @Composable
-fun App2() {
+fun App2(navi: Navigator) {
   var text by remember { mutableStateOf("Hello, World 2!") }
 
   Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-    Button(onClick = { text = "Hello, Desktop 2!" }) { Text(text) }
+    Column(
+      horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.Center,
+    ) {
+      Button(onClick = { text = "Hello, Desktop 2!" }) { Text(text) }
+      Spacer(modifier = Modifier.height(16.dp))
+      Button(onClick = { navi.navigate("home/1061844/Om") }) { Text("Go to App1") }
+      Spacer(modifier = Modifier.height(16.dp))
+      Button(onClick = { navi.navigate("hidden/boo!") }) { Text("Go to Hidden Page") }
+    }
   }
 }
 
@@ -52,8 +63,20 @@ fun NavigationMenu(navi: Navigator) {
     Sidebar(navi)
     Divider(color = Color.Black, modifier = Modifier.fillMaxHeight().width(1.dp))
     NavHost(navi, initialRoute = Routes.getNonHiddenRoutes().first()) {
-      Routes.getAllRoutes().forEach { route ->
-        scene(route) { getComposable(Routes.getRouteByName(route), listOf("yes", "no"))() }
+      Routes.getAllRoutes().forEach { routeName ->
+        val route = Routes.getRouteByName(routeName)
+        if (route.dynamic) {
+          scene(route.name + "/{${route.params.joinToString("}/{")}}") { backStackEntry ->
+            val params = route.params.map { paramName ->
+              backStackEntry.pathMap[paramName] ?: ""
+            }
+            getComposable(route, params)()
+          }
+        } else {
+          scene(routeName) {
+            getComposable(route)()
+          }
+        }
       }
     }
   }
@@ -75,7 +98,12 @@ fun Sidebar(navi: Navigator) {
 fun main() = application {
   Window(onCloseRequest = ::exitApplication) {
     ProvidePreComposeLocals {
-      PreComposeApp { MaterialTheme { NavigationMenu(rememberNavigator()) } }
+      PreComposeApp {
+        MaterialTheme {
+          navi = rememberNavigator()
+          NavigationMenu(navi)
+        }
+      }
     }
   }
 }
