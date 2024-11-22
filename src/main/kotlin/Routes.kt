@@ -3,13 +3,30 @@ import androidx.compose.runtime.Composable
 import java.io.InputStream
 import org.yaml.snakeyaml.Yaml
 
-data class Route(val name: String, val composable: @Composable () -> Unit, val hidden: Boolean)
+data class Route(
+  val name: String,
+  val composable: @Composable (List<String>) -> Unit,
+  val hidden: Boolean,
+  val params: List<String> = emptyList(),
+) {
+  val dynamic: Boolean
+    get() = params.isNotEmpty()
+}
 
 object Routes {
   private val routes: MutableList<Route> = mutableListOf()
 
   init {
     loadRoutesFromYaml()
+  }
+
+  private fun getComposableByName(composableName: String): @Composable (List<String>) -> Unit {
+    return when (composableName) {
+      "App" -> { params -> App(*params.toTypedArray()) }
+      "App2" -> { _ -> App2() }
+      "Text" -> { _ -> Text("Hidden Route") }
+      else -> { _ -> Text("Unknown route") }
+    }
   }
 
   private fun loadRoutesFromYaml() {
@@ -20,23 +37,10 @@ object Routes {
     data["routes"]?.forEach { route ->
       val name = route["name"] as String
       val composableName = route["composable"] as String
-      val composable: @Composable () -> Unit =
-        when (composableName) {
-          "App" -> {
-            @Composable { App() }
-          }
-          "App2" -> {
-            @Composable { App2() }
-          }
-          "Text" -> {
-            @Composable { Text("Hidden Route") }
-          }
-          else -> {
-            @Composable { Text("Unknown route") }
-          }
-        }
+      val composable = getComposableByName(composableName)
       val hidden = route["hidden"] == true
-      routes.add(Route(name, composable, hidden))
+      val params = route["params"] as? List<String> ?: emptyList()
+      routes.add(Route(name, composable, hidden, params))
     }
   }
 
@@ -48,8 +52,15 @@ object Routes {
     return routes.filter { !it.hidden }.map { it.name }
   }
 
-  fun getComposable(route: String): @Composable () -> Unit {
-    return routes.firstOrNull { it.name == route }?.composable
-      ?: @Composable { Text("Unknown route") }
+  fun getRouteByName(name: String): Route {
+    return routes.first { it.name == name }
+  }
+}
+
+fun getComposable(route: Route, params: List<String>): @Composable () -> Unit {
+  return if (route.dynamic) {
+    { route.composable(params) }
+  } else {
+    { route.composable(emptyList()) }
   }
 }

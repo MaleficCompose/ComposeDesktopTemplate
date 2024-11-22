@@ -1,8 +1,11 @@
 routes:
-  - name: home
-    composable: App
   - name: home2
     composable: App2
+  - name: home
+    composable: App
+    params:
+      - id
+      - name
   - name: hidden
     composable: Text
     hidden: true

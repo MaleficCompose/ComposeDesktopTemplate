@@ -1,4 +1,3 @@
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
@@ -24,12 +23,17 @@ import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.rememberNavigator
 
 @Composable
-@Preview
-fun App() {
+fun App(vararg params: String) {
   var text by remember { mutableStateOf("Hello, World!") }
-
   Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-    Button(onClick = { text = "Hello, Desktop!" }) { Text(text) }
+    Column(
+      horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.Center,
+    ) {
+      Button(onClick = { text = "Hello, Desktop!" }) { Text(text) }
+      Spacer(modifier = Modifier.height(16.dp))
+      params.forEach { param -> Text("Param: ${param.capitalize(Locale.current)}") }
+    }
   }
 }
 
@@ -48,7 +52,9 @@ fun NavigationMenu(navi: Navigator) {
     Sidebar(navi)
     Divider(color = Color.Black, modifier = Modifier.fillMaxHeight().width(1.dp))
     NavHost(navi, initialRoute = Routes.getNonHiddenRoutes().first()) {
-      Routes.getAllRoutes().forEach { route -> scene(route) { Routes.getComposable(route)() } }
+      Routes.getAllRoutes().forEach { route ->
+        scene(route) { getComposable(Routes.getRouteByName(route), listOf("yes", "no"))() }
+      }
     }
   }
 }
