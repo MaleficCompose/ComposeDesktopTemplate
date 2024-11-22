@@ -1,0 +1,9 @@
+[versions]
+precompose = "1.6.2"
+spotless = "7.0.0.BETA4"
+
+[libraries]
+precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
+
+[plugins]
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
