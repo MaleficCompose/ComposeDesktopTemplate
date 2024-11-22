@@ -6,9 +6,10 @@ routes:
     hidden: true
     params:
       - id
-      - name
+      - name?
   - name: hidden
     composable: Text
     hidden: true
     params:
-      - text
+      - text?
+startup: home2
