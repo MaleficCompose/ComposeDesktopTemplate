@@ -12,6 +12,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -45,8 +47,8 @@ fun NavigationMenu(navi: Navigator) {
   Row(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
     Sidebar(navi)
     Divider(color = Color.Black, modifier = Modifier.fillMaxHeight().width(1.dp))
-    NavHost(navi, initialRoute = Routes.HOME.first) {
-      Routes.getAllRoutes().forEach { (route, _) -> scene(route) { Routes.getComposable(route)() } }
+    NavHost(navi, initialRoute = Routes.getNonHiddenRoutes().first()) {
+      Routes.getAllRoutes().forEach { route -> scene(route) { Routes.getComposable(route)() } }
     }
   }
 }
@@ -58,8 +60,8 @@ fun Sidebar(navi: Navigator) {
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    Routes.getNonHiddenRoutes().forEach { (route, label) ->
-      Button(onClick = { navi.navigate(route) }) { Text(label) }
+    Routes.getNonHiddenRoutes().forEach { route ->
+      Button(onClick = { navi.navigate(route) }) { Text(route.capitalize(Locale.current)) }
     }
   }
 }

@@ -1,0 +1,8 @@
+routes:
+  - name: home
+    composable: App
+  - name: home2
+    composable: App2
+  - name: hidden
+    composable: Text
+    hidden: true

@@ -1,9 +1,11 @@
 [versions]
 precompose = "1.6.2"
 spotless = "7.0.0.BETA4"
+snakeyaml = "2.3"
 
 [libraries]
 precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
+snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
 
 [plugins]
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

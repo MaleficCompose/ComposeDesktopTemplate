@@ -21,6 +21,7 @@ dependencies {
   implementation(compose.animation)
   implementation(compose.foundation)
   implementation(libs.precompose)
+  implementation(libs.snakeyaml)
   implementation(kotlin("reflect"))
 }
 

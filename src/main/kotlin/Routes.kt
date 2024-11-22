@@ -1,51 +1,55 @@
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import java.util.*
-import kotlin.reflect.full.findAnnotation
-import kotlin.reflect.full.memberProperties
+import java.io.InputStream
+import org.yaml.snakeyaml.Yaml
+
+data class Route(val name: String, val composable: @Composable () -> Unit, val hidden: Boolean)
 
 object Routes {
-  val HOME: Pair<String, @Composable () -> Unit> = "home" to { App() }
-  val HOME2: Pair<String, @Composable () -> Unit> = "home2" to { App2() }
-  @HideRoute val HIDDEN: Pair<String, @Composable () -> Unit> = "hidden" to { Text("Hidden Route") }
+  private val routes: MutableList<Route> = mutableListOf()
 
-  fun getAllRoutes(): List<Pair<String, String>> {
-    return this::class
-      .memberProperties
-      .filter { it.returnType.classifier == Pair::class }
-      .map { property ->
-        val route = property.getter.call(this) as Pair<String, @Composable () -> Unit>
-        route.first to
-          property.name.replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-          }
-      }
+  init {
+    loadRoutesFromYaml()
   }
 
-  fun getNonHiddenRoutes(): List<Pair<String, String>> {
-    return this::class
-      .memberProperties
-      .filter { it.returnType.classifier == Pair::class }
-      .filter { it.findAnnotation<HideRoute>() == null }
-      .map { property ->
-        val route = property.getter.call(this) as Pair<String, @Composable () -> Unit>
-        route.first to
-          property.name.replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+  private fun loadRoutesFromYaml() {
+    val yaml = Yaml()
+    val inputStream: InputStream? = this::class.java.getResourceAsStream("/routes.yaml")
+    val data: Map<String, List<Map<String, Any>>> = yaml.load(inputStream)
+
+    data["routes"]?.forEach { route ->
+      val name = route["name"] as String
+      val composableName = route["composable"] as String
+      val composable: @Composable () -> Unit =
+        when (composableName) {
+          "App" -> {
+            @Composable { App() }
           }
-      }
+          "App2" -> {
+            @Composable { App2() }
+          }
+          "Text" -> {
+            @Composable { Text("Hidden Route") }
+          }
+          else -> {
+            @Composable { Text("Unknown route") }
+          }
+        }
+      val hidden = route["hidden"] == true
+      routes.add(Route(name, composable, hidden))
+    }
+  }
+
+  fun getAllRoutes(): List<String> {
+    return routes.map { it.name }
+  }
+
+  fun getNonHiddenRoutes(): List<String> {
+    return routes.filter { !it.hidden }.map { it.name }
   }
 
   fun getComposable(route: String): @Composable () -> Unit {
-    return this::class
-      .memberProperties
-      .filter { it.returnType.classifier == Pair::class }
-      .map { property -> property.getter.call(this) as Pair<String, @Composable () -> Unit> }
-      .firstOrNull { it.first == route }
-      ?.second ?: @Composable { Text("Unknown route") }
+    return routes.firstOrNull { it.name == route }?.composable
+      ?: @Composable { Text("Unknown route") }
   }
 }
-
-@Target(AnnotationTarget.PROPERTY)
-@Retention(AnnotationRetention.RUNTIME)
-annotation class HideRoute
