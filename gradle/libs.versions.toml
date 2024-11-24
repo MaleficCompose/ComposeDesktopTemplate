@@ -1,11 +1,11 @@
 [versions]
-precompose = "1.6.2"
 spotless = "7.0.0.BETA4"
-snakeyaml = "2.3"
+maleficnav = "1.0.0"
+precompose = "1.6.2"
 
 [libraries]
+maleficnav = { module = "xyz.malefic:maleficnav", version.ref = "maleficnav" }
 precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
-snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
 
 [plugins]
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

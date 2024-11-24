@@ -14,3 +14,9 @@ pluginManagement {
 }
 
 rootProject.name = "ComposeDesktopTemplate"
+
+includeBuild("C:/Users/Malefic/Documents/Programming/Libs/MaleficNav") {
+  dependencySubstitution {
+    substitute(module("xyz.malefic:maleficnav")).using(project(":"))
+  }
+}

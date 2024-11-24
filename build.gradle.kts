@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "xyz.malefic"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
   mavenCentral()
@@ -18,11 +18,8 @@ repositories {
 
 dependencies {
   implementation(compose.desktop.currentOs)
-  implementation(compose.animation)
-  implementation(compose.foundation)
+  implementation(libs.maleficnav)
   implementation(libs.precompose)
-  implementation(libs.snakeyaml)
-  implementation(kotlin("reflect"))
 }
 
 compose.desktop {
