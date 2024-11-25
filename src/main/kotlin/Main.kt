@@ -17,10 +17,10 @@ import xyz.malefic.navigate.RouteManager
 import xyz.malefic.navigate.RouteManager.RoutedNavHost
 import xyz.malefic.navigate.RouteManager.RoutedSidebar
 import xyz.malefic.navigate.RouteManager.navigator
-import xyz.malefic.wrap.MaleficWindow
+import xyz.malefic.wrap.NavWindow
 
 fun main() = application {
-  MaleficWindow(onCloseRequest = ::exitApplication) {
+  NavWindow(onCloseRequest = ::exitApplication) {
     MaterialTheme {
       RouteManager.initialize(composableMap, this::class.java.getResourceAsStream("/routes.yaml")!!)
       NavigationMenu()
@@ -41,5 +41,5 @@ val composableMap: Map<String, @Composable (List<String?>) -> Unit> =
   mapOf(
     "App1" to { params -> App1(id = params[0]!!, name = params[1, null]) },
     "App2" to { _ -> App2(navigator) },
-    "Text" to { params -> Text(text = params[0, "Nope."]!!) },
+    "Text" to { params -> Text(text = params[0, "Nope."]) },
   )

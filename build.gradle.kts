@@ -18,8 +18,8 @@ repositories {
 
 dependencies {
   implementation(compose.desktop.currentOs)
-  implementation(libs.maleficnav)
   implementation(libs.precompose)
+  implementation(libs.maleficnav)
 }
 
 compose.desktop {

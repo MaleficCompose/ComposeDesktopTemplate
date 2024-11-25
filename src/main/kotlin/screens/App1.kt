@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun App1(id: String, name: String?) {
   var text by remember { mutableStateOf("Hello, World!") }
+
   Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
     Column(
       horizontalAlignment = Alignment.CenterHorizontally,
