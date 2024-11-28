@@ -16,13 +16,14 @@ import xyz.malefic.extensions.get
 import xyz.malefic.navigate.RouteManager
 import xyz.malefic.navigate.RouteManager.RoutedNavHost
 import xyz.malefic.navigate.RouteManager.RoutedSidebar
-import xyz.malefic.navigate.RouteManager.navigator
+import xyz.malefic.navigate.RouteManager.navi
+import xyz.malefic.navigate.config.JsonConfigLoader
 import xyz.malefic.wrap.NavWindow
 
 fun main() = application {
   NavWindow(onCloseRequest = ::exitApplication) {
     MaterialTheme {
-      RouteManager.initialize(composableMap, this::class.java.getResourceAsStream("/routes.yaml")!!)
+      RouteManager.initialize(composableMap, this::class.java.getResourceAsStream("/routes.json")!!, JsonConfigLoader())
       NavigationMenu()
     }
   }
@@ -40,6 +41,6 @@ fun NavigationMenu() {
 val composableMap: Map<String, @Composable (List<String?>) -> Unit> =
   mapOf(
     "App1" to { params -> App1(id = params[0]!!, name = params[1, null]) },
-    "App2" to { _ -> App2(navigator) },
+    "App2" to { _ -> App2(navi) },
     "Text" to { params -> Text(text = params[0, "Nope."]) },
   )

@@ -1,0 +1,26 @@
+<configuration>
+    <routes>
+        <route>
+            <name>home2</name>
+            <composable>App2</composable>
+        </route>
+        <route>
+            <name>home</name>
+            <composable>App1</composable>
+            <hidden>true</hidden>
+            <params>
+                <param>id</param>
+                <param>name?</param>
+            </params>
+        </route>
+        <route>
+            <name>hidden</name>
+            <composable>Text</composable>
+            <hidden>true</hidden>
+            <params>
+                <param>text?</param>
+            </params>
+        </route>
+    </routes>
+    <startup>home2</startup>
+</configuration>
