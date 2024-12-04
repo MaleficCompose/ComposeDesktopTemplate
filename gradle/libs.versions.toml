@@ -1,6 +1,6 @@
 [versions]
 spotless = "7.0.0.BETA4"
-maleficnav = "1.1.0"
+maleficnav = "1.1.2"
 precompose = "1.6.2"
 
 [libraries]
