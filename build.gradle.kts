@@ -19,7 +19,9 @@ repositories {
 dependencies {
   implementation(compose.desktop.currentOs)
   implementation(libs.precompose)
-  implementation(libs.maleficnav)
+  implementation(libs.malefic.nav)
+  implementation(libs.malefic.extensions)
+  implementation(libs.malefic.components)
 }
 
 compose.desktop {

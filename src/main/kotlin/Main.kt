@@ -12,18 +12,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.application
 import screens.App1
 import screens.App2
-import xyz.malefic.extensions.get
+import xyz.malefic.components.precompose.NavWindow
+import xyz.malefic.extensions.standard.get
 import xyz.malefic.navigate.RouteManager
 import xyz.malefic.navigate.RouteManager.RoutedNavHost
 import xyz.malefic.navigate.RouteManager.RoutedSidebar
 import xyz.malefic.navigate.RouteManager.navi
 import xyz.malefic.navigate.config.JsonConfigLoader
-import xyz.malefic.wrap.NavWindow
 
 fun main() = application {
   NavWindow(onCloseRequest = ::exitApplication) {
     MaterialTheme {
-      RouteManager.initialize(composableMap, this::class.java.getResourceAsStream("/routes.json")!!, JsonConfigLoader())
+      RouteManager.initialize(
+        composableMap,
+        this::class.java.getResourceAsStream("/routes.json")!!,
+        JsonConfigLoader(),
+      )
       NavigationMenu()
     }
   }

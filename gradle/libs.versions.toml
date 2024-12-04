@@ -1,11 +1,15 @@
 [versions]
 spotless = "7.0.0.BETA4"
-maleficnav = "1.1.2"
 precompose = "1.6.2"
+maleficnav = "1.1.3"
+maleficextensions = "1.1.3"
+maleficcomps = "1.0.2"
 
 [libraries]
-maleficnav = { module = "xyz.malefic:maleficnav", version.ref = "maleficnav" }
 precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
+malefic-nav = { module = "xyz.malefic:maleficnav", version.ref = "maleficnav" }
+malefic-extensions = { module = "xyz.malefic:maleficextensions", version.ref = "maleficextensions" }
+malefic-components = { module = "xyz.malefic:maleficcomponents", version.ref = "maleficcomps" }
 
 [plugins]
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
