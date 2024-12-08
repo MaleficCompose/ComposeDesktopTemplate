@@ -1,18 +1,18 @@
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.application
 import screens.App1
-import screens.App2
+import screens.Home
 import xyz.malefic.components.precompose.NavWindow
+import xyz.malefic.components.text.typography.Heading1
 import xyz.malefic.extensions.standard.get
 import xyz.malefic.navigate.RouteManager
 import xyz.malefic.navigate.RouteManager.RoutedNavHost
@@ -20,7 +20,6 @@ import xyz.malefic.navigate.RouteManager.RoutedSidebar
 import xyz.malefic.navigate.RouteManager.navi
 import xyz.malefic.navigate.config.JsonConfigLoader
 import xyz.malefic.theme.MaleficTheme
-import xyz.malefic.theme.util.loadThemeFromJson
 
 /**
  * The main entry point of the application. It sets up the main window and applies the appropriate
@@ -35,7 +34,7 @@ fun main() = application {
       ) ?: throw IllegalArgumentException("Theme file not found")
 
     // Apply the selected theme and initialize the route manager
-    MaleficTheme(loadThemeFromJson(themeInputStream)) {
+    MaleficTheme(themeInputStream) {
       RouteManager.initialize(
         composableMap,
         this::class.java.getResourceAsStream("/routes.json")!!,
@@ -52,10 +51,15 @@ fun main() = application {
  */
 @Composable
 fun NavigationMenu() {
-  Row(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
-    RoutedSidebar()
-    Divider(color = Color.Black, modifier = Modifier.fillMaxHeight().width(1.dp))
-    RoutedNavHost()
+  Box(
+    modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background),
+    contentAlignment = Alignment.Center,
+  ) {
+    Row(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+      RoutedSidebar()
+      Divider(color = Color.Black, modifier = Modifier.fillMaxHeight().width(1.dp))
+      RoutedNavHost()
+    }
   }
 }
 
@@ -66,6 +70,6 @@ fun NavigationMenu() {
 val composableMap: Map<String, @Composable (List<String?>) -> Unit> =
   mapOf(
     "App1" to { params -> App1(id = params[0]!!, name = params[1, null]) },
-    "App2" to { _ -> App2(navi) },
-    "Text" to { params -> Text(text = params[0, "Nope."]) },
+    "Home" to { _ -> Home(navi) },
+    "Text" to { params -> Heading1(text = params[0, "Nope."]) },
   )
