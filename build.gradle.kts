@@ -22,6 +22,7 @@ dependencies {
   implementation(libs.malefic.nav)
   implementation(libs.malefic.extensions)
   implementation(libs.malefic.components)
+  implementation(libs.malefic.theming)
 }
 
 compose.desktop {

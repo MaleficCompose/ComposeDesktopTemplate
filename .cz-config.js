@@ -22,9 +22,10 @@ module.exports = {
     },
     {value: 'WIP', name: 'WIP:      Work in progress'},
     {value: 'revert', name: 'revert:   Revert to a prior commit'},
+    {value: 'update', name: 'update:      Update external tools or libraries'},
   ],
 
-  scopes: [{name: 'malefictheme'}, {name: 'themeconfig'}, {name: 'util'}],
+  scopes: [{name: 'app1'}, {name: 'home'}, {name: 'main'}, {name: 'nav'}, {name: 'theme'}],
 
   usePreparedCommit: false, // to re-use commit from ./.git/COMMIT_EDITMSG
   allowTicketNumber: false,
@@ -39,6 +40,11 @@ module.exports = {
       {name: 'gradle'},
       {name: 'cz'},
       {name: 'readme'},
+    ],
+    update: [
+      {name: 'malefic'},
+      {name: 'precompose'},
+      {name: 'spotless'},
     ]
   },
   // override the messages, defaults are as follows
