@@ -1,17 +1,22 @@
 [versions]
-spotless = "7.0.0.BETA4"
 precompose = "1.6.2"
-maleficnav = "1.1.5"
-maleficextensions = "1.1.5"
-maleficcomps = "1.0.5"
-malefictheme = "1.0.2"
+maleficnav = "1.2.0"
+maleficextensions = "1.2.0"
+maleficcomps = "1.1.0"
+malefictheme = "1.1.2"
+kotlinter = "5.0.1"
+compose = "1.8.0-alpha01"
+kotlin = "2.1.0"
 
 [libraries]
-precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
-malefic-nav = { module = "xyz.malefic:maleficnav", version.ref = "maleficnav" }
-malefic-extensions = { module = "xyz.malefic:maleficextensions", version.ref = "maleficextensions" }
-malefic-components = { module = "xyz.malefic:maleficcomponents", version.ref = "maleficcomps" }
-malefic-theming = { module = "xyz.malefic:malefictheming", version.ref = "malefictheme" }
+precompose = { group = "moe.tlaster", name = "precompose", version.ref = "precompose" }
+malefic-nav = { group = "xyz.malefic.compose", name = "nav", version.ref = "maleficnav" }
+malefic-extensions = { group = "xyz.malefic.compose", name = "ext", version.ref = "maleficextensions" }
+malefic-components = { group = "xyz.malefic.compose", name = "comps", version.ref = "maleficcomps" }
+malefic-theming = { group = "xyz.malefic.compose", name = "theming", version.ref = "malefictheme" }
 
 [plugins]
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+compose-kotlin = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
