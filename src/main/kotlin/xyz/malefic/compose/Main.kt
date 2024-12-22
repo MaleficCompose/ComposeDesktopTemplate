@@ -18,8 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.application
 import xyz.malefic.compose.comps.precompose.NavWindow
 import xyz.malefic.compose.comps.text.typography.Heading1
-import xyz.malefic.compose.ext.standard.get
-import xyz.malefic.compose.ext.standard.inputstream.grass
 import xyz.malefic.compose.nav.RouteManager
 import xyz.malefic.compose.nav.RouteManager.RoutedNavHost
 import xyz.malefic.compose.nav.RouteManager.RoutedSidebar
@@ -28,6 +26,8 @@ import xyz.malefic.compose.nav.config.MalefiConfigLoader
 import xyz.malefic.compose.screens.App1
 import xyz.malefic.compose.screens.Home
 import xyz.malefic.compose.theming.MaleficTheme
+import xyz.malefic.ext.list.get
+import xyz.malefic.ext.stream.grass
 
 /**
  * The xyz.malefic.compose.main entry point of the application. It sets up the xyz.malefic.compose.main window and applies the appropriate

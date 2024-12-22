@@ -20,7 +20,7 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation(libs.precompose)
     implementation(libs.malefic.nav)
-    implementation(libs.malefic.extensions)
+    implementation(libs.bundles.malefic.ext)
     implementation(libs.malefic.components)
     implementation(libs.malefic.theming)
 }

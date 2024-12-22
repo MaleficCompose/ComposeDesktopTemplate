@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import xyz.malefic.compose.comps.box.BackgroundBox
 import xyz.malefic.compose.comps.text.typography.Heading2
-import xyz.malefic.compose.ext.standard.string.either
+import xyz.malefic.ext.string.either
 
 @Composable
 fun App1(
