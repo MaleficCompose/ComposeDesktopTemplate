@@ -6,7 +6,7 @@ maleficcomps = "1.1.0"
 malefictheme = "1.1.2"
 maleficengine = "1.0.0"
 kotlinter = "5.0.1"
-compose = "1.8.0-alpha01"
+compose = "1.8.0-dev1920"
 kotlin = "2.1.0"
 
 [libraries]
