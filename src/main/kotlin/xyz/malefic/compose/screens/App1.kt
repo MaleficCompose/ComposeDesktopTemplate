@@ -1,7 +1,6 @@
 package xyz.malefic.compose.screens
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
@@ -16,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import xyz.malefic.compose.comps.box.BackgroundBox
 import xyz.malefic.compose.comps.text.typography.Heading2
+import xyz.malefic.compose.engine.factory.ColumnFactory
+import xyz.malefic.compose.engine.pocket.*
 import xyz.malefic.ext.string.either
 
 @Composable
@@ -26,14 +27,14 @@ fun App1(
     var text by remember { mutableStateOf("Hello, World!") }
 
     BackgroundBox(contentAlignment = Alignment.Center) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
+        ColumnFactory {
             Button(onClick = { text = text.either("Hello, World!", "Hello, Desktop!") }) { Text(text) }
             Spacer(modifier = Modifier.height(16.dp))
             Heading2("ID: $id")
             name?.let { Heading2("Name: $name") } ?: run { Heading2("Unnamed") }
+        } *= {
+            horizontalAlignment = Alignment.CenterHorizontally
+            verticalArrangement = Arrangement.Center
         }
     }
 }

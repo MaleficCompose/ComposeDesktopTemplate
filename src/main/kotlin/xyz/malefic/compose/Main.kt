@@ -1,23 +1,20 @@
 package xyz.malefic.compose
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.application
 import xyz.malefic.compose.comps.precompose.NavWindow
 import xyz.malefic.compose.comps.text.typography.Heading1
+import xyz.malefic.compose.engine.factory.RowFactory
+import xyz.malefic.compose.engine.pocket.*
 import xyz.malefic.compose.nav.RouteManager
 import xyz.malefic.compose.nav.RouteManager.RoutedNavHost
 import xyz.malefic.compose.nav.RouteManager.RoutedSidebar
@@ -30,8 +27,10 @@ import xyz.malefic.ext.list.get
 import xyz.malefic.ext.stream.grass
 
 /**
- * The xyz.malefic.compose.main entry point of the application. It sets up the xyz.malefic.compose.main window and applies the appropriate
- * theme based on the system's theme.
+ * Entry point of the application that sets up the main navigation window.
+ * It determines the theme based on the system's current theme (dark or light),
+ * applies the selected theme, and initializes the route manager with the
+ * composable map and configuration loader. The navigation menu is then displayed.
  */
 fun main() =
     application {
@@ -55,21 +54,20 @@ fun main() =
     }
 
 /**
- * Composable function that defines the navigation menu layout. It includes a sidebar and a xyz.malefic.compose.main
+ * Composable function that defines the navigation menu layout. It includes a sidebar and a
  * content area separated by a divider.
  */
 @Composable
 fun NavigationMenu() {
-    Box(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background),
-        contentAlignment = Alignment.Center,
-    ) {
-        Row(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
-            RoutedSidebar()
-            Divider(color = Color.Black, modifier = Modifier.fillMaxHeight().width(1.dp))
-            RoutedNavHost()
-        }
-    }
+    RowFactory {
+        RoutedSidebar()
+        Divider(color = MaterialTheme.colors.onBackground, modifier = Modifier.fillMaxHeight().width(1.dp))
+        RoutedNavHost()
+    }.apply {
+        modifier = Modifier.fillMaxWidth().fillMaxHeight()
+    }.compose()
+        .center()
+        .background()()
 }
 
 /**

@@ -17,12 +17,10 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.bundles.malefic.compose)
     implementation(compose.desktop.currentOs)
-    implementation(libs.precompose)
-    implementation(libs.malefic.nav)
     implementation(libs.bundles.malefic.ext)
-    implementation(libs.malefic.components)
-    implementation(libs.malefic.theming)
+    implementation(libs.precompose)
 }
 
 compose.desktop {
