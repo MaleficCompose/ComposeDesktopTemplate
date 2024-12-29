@@ -3,13 +3,8 @@ package xyz.malefic.compose
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.application
 import xyz.malefic.compose.comps.precompose.NavWindow
 import xyz.malefic.compose.comps.text.typography.Heading1
@@ -35,19 +30,21 @@ import xyz.malefic.ext.stream.grass
 fun main() =
     application {
         NavWindow(onCloseRequest = ::exitApplication) {
+            // Initialize the route manager
+            RouteManager.initialize(
+                composableMap,
+                grass("/routes.mcf")!!,
+                MalefiConfigLoader(),
+            )
+
             // Determine the theme file path based on the system's theme (dark or light)
             val themeInputStream =
                 grass(
                     if (isSystemInDarkTheme()) "/theme/dark.json" else "/theme/light.json",
                 ) ?: throw IllegalArgumentException("Theme file not found")
 
-            // Apply the selected theme and initialize the route manager
+            // Apply the selected theme and invoke the Navigation Menu
             MaleficTheme(themeInputStream) {
-                RouteManager.initialize(
-                    composableMap,
-                    grass("/routes.mcf")!!,
-                    MalefiConfigLoader(),
-                )
                 NavigationMenu()
             }
         }
@@ -60,8 +57,9 @@ fun main() =
 @Composable
 fun NavigationMenu() {
     RowFactory {
-        RoutedSidebar()
-        Divider(color = MaterialTheme.colors.onBackground, modifier = Modifier.fillMaxHeight().width(1.dp))
+        fuel {
+            RoutedSidebar()
+        }.divide()()
         RoutedNavHost()
     }.apply {
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
