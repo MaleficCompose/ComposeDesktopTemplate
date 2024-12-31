@@ -13,6 +13,10 @@ import xyz.malefic.compose.comps.box.BackgroundBox
 import xyz.malefic.compose.engine.factory.ButtonFactory
 import xyz.malefic.compose.engine.factory.ColumnFactory
 import xyz.malefic.compose.engine.factory.TextFactory
+import xyz.malefic.compose.engine.factory.div
+import xyz.malefic.compose.engine.factory.divAssign
+import xyz.malefic.compose.engine.factory.timesAssign
+import xyz.malefic.compose.engine.fuel.space
 import xyz.malefic.compose.engine.pocket.*
 import xyz.malefic.ext.string.either
 
@@ -22,26 +26,25 @@ fun Home(navi: Navigator) {
 
     BackgroundBox(contentAlignment = Alignment.Center) {
         ColumnFactory {
-            ButtonFactory { TextFactory(text)() }
-                .apply {
-                    onClick = { text = text.either("Hello, World 2!", "Hello, Desktop 2!") }
-                }.compose()
-                .space(16.dp)()
-            ButtonFactory { TextFactory("Go to App1")() }
-                .apply {
-                    onClick = { navi.navigate("app1/123456") }
-                }.compose()
-                .space(16.dp)()
-            ButtonFactory { TextFactory("Go to App1 But With a Name")() }
-                .apply {
-                    onClick = { navi.navigate("app1/123456/Om Gupta") }
-                }.compose()
-                .space(16.dp)()
-            ButtonFactory { TextFactory("Go to Hidden Page")() }
-                .apply {
-                    onClick = { navi.navigate("hidden/boo!") }
-                }.compose()()
-        } *= {
+            ButtonFactory { TextFactory(text)() } / {
+                onClick = { text = text.either("Hello, World 2!", "Hello, Desktop 2!") }
+            } *= {
+                space(16.dp)
+            }
+            ButtonFactory { TextFactory("Go to App1")() } / {
+                onClick = { navi.navigate("app1/123456") }
+            } *= {
+                space(16.dp)
+            }
+            ButtonFactory { TextFactory("Go to App1 But With a Name")() } / {
+                onClick = { navi.navigate("app1/123456/Om Gupta") }
+            } *= {
+                space(16.dp)
+            }
+            ButtonFactory { TextFactory("Go to Hidden Page")() } /= {
+                onClick = { navi.navigate("hidden/boo!") }
+            }
+        } /= {
             horizontalAlignment = Alignment.CenterHorizontally
             verticalArrangement = Arrangement.Center
         }

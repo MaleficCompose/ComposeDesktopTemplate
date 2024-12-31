@@ -9,7 +9,12 @@ import androidx.compose.ui.window.application
 import xyz.malefic.compose.comps.precompose.NavWindow
 import xyz.malefic.compose.comps.text.typography.Heading1
 import xyz.malefic.compose.engine.factory.RowFactory
-import xyz.malefic.compose.engine.pocket.*
+import xyz.malefic.compose.engine.factory.div
+import xyz.malefic.compose.engine.factory.timesAssign
+import xyz.malefic.compose.engine.fuel.background
+import xyz.malefic.compose.engine.fuel.center
+import xyz.malefic.compose.engine.fuel.divide
+import xyz.malefic.compose.engine.fuel.fuel
 import xyz.malefic.compose.nav.RouteManager
 import xyz.malefic.compose.nav.RouteManager.RoutedNavHost
 import xyz.malefic.compose.nav.RouteManager.RoutedSidebar
@@ -57,15 +62,14 @@ fun main() =
 @Composable
 fun NavigationMenu() {
     RowFactory {
-        fuel {
-            RoutedSidebar()
-        }.divide()()
+        fuel { RoutedSidebar() }.divide()()
         RoutedNavHost()
-    }.apply {
+    } / {
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
-    }.compose()
-        .center()
-        .background()()
+    } *= {
+        center()
+        background()
+    }
 }
 
 /**
