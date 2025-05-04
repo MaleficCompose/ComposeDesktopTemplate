@@ -75,11 +75,10 @@ jobs:
           git tag -a "v${{ steps.set-version.outputs.new_version }}" -m "Release v${{ steps.set-version.outputs.new_version }}"
           git push origin HEAD:main --tags
 
-  # Build job - just builds the application
+  # Build job for regular pushes and pull requests
   build:
     name: Build Application
-    needs: [increment-version]
-    if: always() && (github.event_name != 'workflow_dispatch' || needs.increment-version.result == 'success')
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
       ref: ${{ steps.set-ref.outputs.ref }}
@@ -87,14 +86,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && format('v{0}', needs.increment-version.outputs.new_version) || github.ref }}
 
       - name: Set reference
         id: set-ref
         run: |
-          REF=${{ github.event_name == 'workflow_dispatch' && format('v{0}', needs.increment-version.outputs.new_version) || github.ref }}
-          echo "ref=$REF" >> $GITHUB_OUTPUT
+          echo "ref=${{ github.ref }}" >> $GITHUB_OUTPUT
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -104,7 +100,7 @@ jobs:
           cache: gradle
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Make gradlew executable
         run: chmod +x gradlew
@@ -119,9 +115,53 @@ jobs:
           path: build/
           retention-days: 1
 
-  # Package job - packages the application for different platforms
+  # Build job for manual releases
+  build-release:
+    name: Build Release
+    if: github.event_name == 'workflow_dispatch'
+    needs: [increment-version]
+    runs-on: ubuntu-latest
+    outputs:
+      ref: ${{ steps.set-ref.outputs.ref }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ format('v{0}', needs.increment-version.outputs.new_version) }}
+
+      - name: Set reference
+        id: set-ref
+        run: |
+          echo "ref=${{ format('v{0}', needs.increment-version.outputs.new_version) }}" >> $GITHUB_OUTPUT
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: build/
+          retention-days: 1
+
+  # Package job for regular pushes and pull requests
   package:
     name: Package for ${{ matrix.os }}
+    if: github.event_name != 'workflow_dispatch'
     needs: [build]
     strategy:
       matrix:
@@ -150,7 +190,53 @@ jobs:
           cache: gradle
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Package for ${{ matrix.os }}
+        run: ./gradlew packageDistributionForCurrentOS
+
+      - name: Upload package as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ComposeDesktopTemplate-${{ matrix.packageType }}
+          path: build/compose/binaries/main/${{ matrix.packageType }}/*
+
+  # Package job for manual releases
+  package-release:
+    name: Package Release for ${{ matrix.os }}
+    if: github.event_name == 'workflow_dispatch'
+    needs: [build-release]
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            packageType: deb
+          - os: windows-latest
+            packageType: msi
+          - os: macos-latest
+            packageType: dmg
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.build-release.outputs.ref }}
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Make gradlew executable
         run: chmod +x gradlew
@@ -202,7 +288,7 @@ jobs:
   create-full-release:
     name: Create Full Release
     if: github.event_name == 'workflow_dispatch'
-    needs: [increment-version, package]
+    needs: [increment-version, package-release]
     runs-on: ubuntu-latest
 
     steps:
