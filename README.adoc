@@ -126,7 +126,9 @@ ColumnFactory {
 
 === Building the Application
 
-To build a distributable package:
+==== Local Building
+
+To build a distributable package locally:
 
 [source,bash]
 ----
@@ -135,11 +137,54 @@ To build a distributable package:
 
 This will create a platform-specific package (DMG for macOS, MSI for Windows, DEB for Linux).
 
+==== Automated Building with GitHub Actions
+
+The project includes a GitHub Actions workflow that automatically builds and packages the application:
+
+* Builds are triggered on pushes to the main branch and pull requests
+* Pre-releases are automatically created for every push to the main branch
+* Full releases can be created manually with version incrementing
+* Packages are built for all platforms (Windows, macOS, Linux)
+* All packages use the standard (non-release) distribution for better compatibility
+
+===== Automatic Pre-releases
+
+Every push to the main branch automatically creates a pre-release with:
+
+* A "dev-X" tag (where X is the build number)
+* Packages for all platforms
+* Detailed information about the build
+* Pre-release flag to indicate it's not a stable release
+
+===== Manual Full Releases
+
+To create a full release with version incrementing:
+
+1. Go to the "Actions" tab in the GitHub repository
+2. Select the "Package Compose Desktop Application" workflow
+3. Click "Run workflow"
+4. Choose the release type:
+   * `patch` - Increases the third number (e.g., 1.0.0 → 1.0.1)
+   * `minor` - Increases the second number and resets the third (e.g., 1.0.0 → 1.1.0)
+   * `major` - Increases the first number and resets the others (e.g., 1.0.0 → 2.0.0)
+5. Click "Run workflow"
+
+The workflow will:
+
+1. Increment the version in build.gradle.kts
+2. Commit and push the changes
+3. Create a new tag with the version number
+4. Build packages for all platforms
+5. Create a GitHub release with the packages attached
+
 == Project Structure
 
 [source]
 ----
 ComposeDesktopTemplate/
+├── .github/
+│   └── workflows/
+│       └── package.yml        # GitHub Actions workflow for packaging
 ├── build.gradle.kts           # Gradle build configuration
 ├── gradle/
 │   └── libs.versions.toml     # Library versions and bundles
@@ -163,7 +208,7 @@ Routes are configured in the `routes.mcf` file:
 
 * `*` indicates the default route
 * `?` after a parameter name indicates it's optional
-* `?` after a route name indicates it takes parameters
+* `?` after a route name indicates it is not shown in the sidebar, though this only matters when the RoutedSidebar is used (not recommended)
 
 === Themes
 
@@ -173,3 +218,6 @@ Themes are configured in JSON files:
 * `light.json` - Light theme colors
 
 The application automatically selects the theme based on the system's theme.
+
+== LICENSE
+This project is licensed under the MIT License. See the link:LICENSE[LICENSE] file for more details.

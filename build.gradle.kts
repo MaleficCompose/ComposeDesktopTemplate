@@ -1,4 +1,6 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat.Deb
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat.Dmg
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi
 
 plugins {
     alias(libs.plugins.compose.kotlin)
@@ -28,7 +30,7 @@ compose.desktop {
         mainClass = "xyz.malefic.compose.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(Dmg, Msi, Deb)
             packageName = "ComposeDesktopTemplate"
             packageVersion = "1.0.0"
         }
@@ -36,7 +38,7 @@ compose.desktop {
 }
 
 tasks {
-    create("formatAndLintKotlin") {
+    register("formatAndLintKotlin") {
         group = "formatting"
         description = "Fix Kotlin code style deviations with kotlinter"
         dependsOn(formatKotlin)
