@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.unit.dp
 import xyz.malefic.compose.comps.box.BackgroundBox
 import xyz.malefic.compose.comps.text.typography.Heading2
@@ -37,7 +38,7 @@ fun App1(
             Heading2("ID: $id")
             Heading2(name.resolveNull("Name: $name", "Unnamed"))
         } /= {
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = CenterHorizontally
             verticalArrangement = Arrangement.Center
         }
     }

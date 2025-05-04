@@ -1,0 +1,175 @@
+= Compose Desktop Template
+:toc: left
+:toclevels: 3
+:icons: font
+:source-highlighter: highlightjs
+
+A template project for creating desktop applications using Jetbrains Compose for Desktop with a focus on simplicity and productivity.
+
+image::homepage.png[Basic Homepage created with this template]
+
+== Overview
+
+This template provides a starting point for building desktop applications using Compose for Desktop. It includes:
+
+* Navigation system with route configuration
+* Theming support with light and dark modes
+* Custom UI components and extensions
+* DSL-like syntax for building UIs
+
+== Libraries
+
+=== Core Libraries
+
+[cols="1,1,2", options="header"]
+|===
+|Library |Version |Purpose
+|Compose for Desktop |1.8.0-rc01 |UI toolkit for building desktop applications with Kotlin
+|Kotlin JVM |2.1.20 |Kotlin programming language for JVM
+|===
+
+=== Navigation and Routing
+
+[cols="1,1,2", options="header"]
+|===
+|Library |Version |Purpose
+|PreCompose |1.6.2 |Navigation library for Compose applications
+|Malefic Nav |1.3.3 |Custom navigation components and utilities
+|===
+
+=== UI Components and Theming
+
+[cols="1,1,2", options="header"]
+|===
+|Library |Version |Purpose
+|Malefic Components |1.1.0 |Custom UI components for Compose
+|Malefic Theming |1.1.2 |Theming support with JSON configuration
+|Malefic Engine |1.3.0 |UI building engine with DSL-like syntax
+|===
+
+=== Extensions
+
+[cols="1,1,2", options="header"]
+|===
+|Library |Version |Purpose
+|Malefic Extensions Core |1.4.2 |Core utility extensions for Kotlin
+|Malefic Extensions Compose |1.4.2 |Compose-specific utility extensions
+|===
+
+=== Development Tools
+
+[cols="1,1,2", options="header"]
+|===
+|Library |Version |Purpose
+|Kotlinter |5.0.2 |Kotlin linting and formatting tool
+|===
+
+== Basic Functionality
+
+=== Navigation System
+
+The template includes a navigation system that allows you to:
+
+* Define routes in a configuration file (`routes.mcf`)
+* Navigate between screens with parameters
+* Use a sidebar for navigation
+
+Example route configuration:
+[source,text]
+----
+routes:
+  home* -> Home
+  app1 -> App1? [id, name?]
+  hidden -> Text? [text?]
+----
+
+=== Theming
+
+The template supports both light and dark themes:
+
+* Theme files are defined in JSON format
+* System theme detection is supported
+* Material Design color system is used
+
+=== UI Building
+
+The template provides a DSL-like syntax for building UIs:
+
+* Factory classes for common UI elements (Row, Column, Button, Text)
+* Custom operators for applying modifiers and styles
+* Utility functions for common tasks
+
+Example:
+[source,kotlin]
+----
+ColumnFactory {
+    ButtonFactory { TextFactory(text)() } / {
+        onClick = { text = text.either("Hello, World!", "Hello, Desktop!") }
+    } *= {
+        space(16.dp)
+    }
+}
+----
+
+== Getting Started
+
+=== Prerequisites
+
+* JDK 11 or higher
+* Gradle 7.0 or higher
+
+=== Running the Application
+
+1. Clone the repository
+2. Open the project in your IDE (IntelliJ IDEA recommended)
+3. Run `./gradlew desktop`
+
+=== Building the Application
+
+To build a distributable package:
+
+[source,bash]
+----
+./gradlew packageDistributionForCurrentOS
+----
+
+This will create a platform-specific package (DMG for macOS, MSI for Windows, DEB for Linux).
+
+== Project Structure
+
+[source]
+----
+ComposeDesktopTemplate/
+├── build.gradle.kts           # Gradle build configuration
+├── gradle/
+│   └── libs.versions.toml     # Library versions and bundles
+├── src/
+│   └── main/
+│       ├── kotlin/
+│       │   └── xyz/malefic/compose/
+│       │       ├── Main.kt    # Application entry point
+│       │       └── screens/   # Screen composables
+│       └── resources/
+│           ├── routes.mcf     # Route configuration
+│           └── theme/         # Theme JSON files
+└── README.adoc                # This file
+----
+
+== Configuration
+
+=== Routes
+
+Routes are configured in the `routes.mcf` file:
+
+* `*` indicates the default route
+* `?` after a parameter name indicates it's optional
+* `?` after a route name indicates it takes parameters
+
+=== Themes
+
+Themes are configured in JSON files:
+
+* `dark.json` - Dark theme colors
+* `light.json` - Light theme colors
+
+The application automatically selects the theme based on the system's theme.
