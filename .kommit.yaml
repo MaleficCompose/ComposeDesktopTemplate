@@ -16,6 +16,7 @@ scopes:
     - dep
     - build
     - ci
+    - kommit
 
 options:
   allowBreakingChanges:

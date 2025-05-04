@@ -34,7 +34,7 @@ import xyz.malefic.ext.stream.grass
  */
 fun main() =
     application {
-        NavWindow(onCloseRequest = ::exitApplication) {
+        NavWindow(onCloseRequest = ::exitApplication, title = "Compose Desktop Template") {
             // Initialize the route manager
             RouteManager.initialize(
                 composableMap,
