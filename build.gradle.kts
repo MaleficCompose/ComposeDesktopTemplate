@@ -41,8 +41,8 @@ tasks {
     register("formatAndLintKotlin") {
         group = "formatting"
         description = "Fix Kotlin code style deviations with kotlinter"
-        dependsOn(formatKotlin)
-        dependsOn(lintKotlin)
+        dependsOn(named("formatKotlin"))
+        dependsOn(named("lintKotlin"))
     }
     build {
         dependsOn(named("formatAndLintKotlin"))
