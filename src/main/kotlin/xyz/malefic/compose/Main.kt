@@ -1,20 +1,20 @@
 package xyz.malefic.compose
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.application
+import xyz.malefic.compose.comps.box.MaleficBox
 import xyz.malefic.compose.comps.precompose.NavWindow
 import xyz.malefic.compose.comps.text.typography.Heading1
-import xyz.malefic.compose.engine.factory.RowFactory
-import xyz.malefic.compose.engine.factory.div
-import xyz.malefic.compose.engine.factory.timesAssign
-import xyz.malefic.compose.engine.fuel.background
-import xyz.malefic.compose.engine.fuel.center
-import xyz.malefic.compose.engine.fuel.divide
-import xyz.malefic.compose.engine.fuel.fuel
 import xyz.malefic.compose.nav.RouteManager
 import xyz.malefic.compose.nav.RouteManager.RoutedNavHost
 import xyz.malefic.compose.nav.RouteManager.RoutedSidebar
@@ -22,7 +22,6 @@ import xyz.malefic.compose.nav.RouteManager.navi
 import xyz.malefic.compose.nav.config.MalefiConfigLoader
 import xyz.malefic.compose.screens.App1
 import xyz.malefic.compose.screens.Home
-import xyz.malefic.compose.theming.MaleficTheme
 import xyz.malefic.ext.list.get
 import xyz.malefic.ext.stream.grass
 
@@ -49,7 +48,7 @@ fun main() =
                 ) ?: throw IllegalArgumentException("Theme file not found")
 
             // Apply the selected theme and invoke the Navigation Menu
-            MaleficTheme(themeInputStream) {
+            MaleficBox(themeInputStream) {
                 NavigationMenu()
             }
         }
@@ -60,17 +59,12 @@ fun main() =
  * content area separated by a divider.
  */
 @Composable
-fun NavigationMenu() {
-    RowFactory {
-        fuel { RoutedSidebar() }.divide()()
+fun NavigationMenu() =
+    Row(Modifier.fillMaxSize()) {
+        RoutedSidebar()
+        Box(Modifier.fillMaxHeight().width(1.dp).background(MaterialTheme.colors.onBackground))
         RoutedNavHost()
-    } / {
-        modifier = Modifier.fillMaxWidth().fillMaxHeight()
-    } *= {
-        center()
-        background()
     }
-}
 
 /**
  * A map of composable functions used for routing. Each entry maps a route name to a composable
