@@ -4,6 +4,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi
 
 plugins {
     alias(libs.plugins.compose.kotlin)
+    alias(libs.plugins.compose.reload)
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.compose)

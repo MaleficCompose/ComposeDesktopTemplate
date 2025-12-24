@@ -7,6 +7,7 @@ malefictheme = "2.1.2"
 kotlinter = "5.3.0"
 compose = "1.9.3"
 kotlin = "2.3.0"
+composeHotReload = "1.1.0-alpha03"
 
 [libraries]
 precompose = { group = "moe.tlaster", name = "precompose", version.ref = "precompose" }
@@ -21,6 +22,7 @@ compose-kotlin = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+compose-reload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload"}
 
 [bundles]
 malefic-ext = ['malefic-ext-core', 'malefic-ext-compose']
