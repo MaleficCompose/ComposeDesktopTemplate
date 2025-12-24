@@ -30,11 +30,11 @@ fun Home(navi: Navigator) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             TextButton(onClick = { text = text.either("Hello, World 2!", "Hello, Desktop 2!") }) { Text(text) }
             Spacer(Modifier.height(16.dp))
-            TextButton(onClick = { navi gate "app1/123" }) { Text("Go to App1") }
-            Spacer(Modifier.height(16.dp))
-            TextButton(
-                onClick = { navi gate "app1/123/${name.ifEmpty { "Malefic" }}" },
-            ) { Text("Go to App1 But With ${name.ifEmpty { "Malefic" }}") }
+            if (name.isEmpty()) {
+                TextButton(onClick = { navi gate "app1/123" }) { Text("Go to App1") }
+            } else {
+                TextButton(onClick = { navi gate "app1/123/$name" }) { Text("Go to App1 But With $name") }
+            }
             Spacer(Modifier.height(16.dp))
             TextButton(onClick = { navi gate "hidden/boo!" }) { Text("Go to Hidden Page") }
             Spacer(Modifier.height(16.dp))
