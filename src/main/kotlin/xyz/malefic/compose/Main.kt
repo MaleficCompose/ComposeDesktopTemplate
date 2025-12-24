@@ -19,7 +19,7 @@ import xyz.malefic.compose.nav.RouteManager
 import xyz.malefic.compose.nav.RouteManager.RoutedNavHost
 import xyz.malefic.compose.nav.RouteManager.RoutedSidebar
 import xyz.malefic.compose.nav.RouteManager.navi
-import xyz.malefic.compose.screens.App1
+import xyz.malefic.compose.screens.Hidden
 import xyz.malefic.compose.screens.Home
 import xyz.malefic.ext.list.get
 import xyz.malefic.ext.stream.grass
@@ -39,11 +39,11 @@ fun main() =
                     Home(navi)
                 }
 
-                dynamic("app1", hidden = true, "id", "name?") { params ->
-                    App1(params[0]!!, params[1, null])
+                dynamic("hidden", hidden = true, "id", "name?") { params ->
+                    Hidden(params[0]!!, params[1, null])
                 }
 
-                dynamic("hidden", hidden = true, "text?") { params ->
+                dynamic("text", "text?") { params ->
                     Heading1(text = params[0, "Nope."])
                 }
             }

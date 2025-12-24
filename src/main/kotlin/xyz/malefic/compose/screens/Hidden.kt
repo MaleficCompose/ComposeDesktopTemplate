@@ -17,7 +17,7 @@ import xyz.malefic.ext.any.resolveNull
 import xyz.malefic.ext.string.either
 
 @Composable
-fun App1(
+fun Hidden(
     id: String,
     name: String?,
 ) {
